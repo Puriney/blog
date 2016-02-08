@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Drop-seq: single-cell sequencing in large scale</title>
+  <meta name="description" content="Drop-seq greatly improves the through-put of single-cell sequencing where transcriptome data of thousands of cells could be generated. This post highlights 3...">
+
+
+  <link rel="stylesheet" href="/blog/css/tufte.css">	
+  
+
+  <!-- Google Fonts loaded here depending on setting in _data/options.yml true loads font, blank does not-->
+  
+    <link href='//fonts.googleapis.com/css?family=Lato:400,400italic' rel='stylesheet' type='text/css'>
+  
+  <!-- Load up MathJax script if needed ... specify in /_data/options.yml file-->
+  
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+  <link rel="canonical" href="/blog/articles/2016/01/13/Drop-seq-single-cell-sequencing-in-large-scale">
+  <link rel="alternate" type="application/rss+xml" title="Puriney" href="/blog/feed.xml" />
+</head>
+
+  <body>
+    <article class="group">
+      <h1>Drop-seq: single-cell sequencing in large scale</h1>
+<!-- <p class="subtitle">January 13, 2016</p> -->
+
+
+<p><a href="http://mccarrolllab.com/dropseq/">Drop-seq</a> greatly improves the through-put of single-cell sequencing where transcriptome data of thousands of cells could be generated. This post highlights 3 features, 1 tech issue, 1 aspect of downstream analysis.</p>
+
+<!-- more -->
+
+<h2 id="stamp">STAMP</h2>
+
+<p>STAMP: single-cell transcriptome attached to microparticle. Due to the primer bead design, i.e. Cell barcode + UMI, the source of single-cell’s transcriptome would not be ambiguous and rather clearly determined.</p>
+
+<figure class="fullwidth"><img src="/blog/assets/img/drop-seq-umi-design.png" /><figcaption>Design of cell barcode and UMI</figcaption></figure>
+
+<h2 id="not-compatible-for-pre-transcriptional-layer-but-">Not compatible for pre-transcriptional layer, but …</h2>
+
+<p><label for="id-1" class="margin-toggle">⊕</label><input type="checkbox" id="id-1" class="margin-toggle" /><span class="marginnote"><img class="fullwidth" src="/blog/assets/img/drop-seq-rna-hybrid.png" /><br />Hybridization</span></p>
+
+<p>The poly-T end of the primer bead is responsible to attract the poly-A tail of mRNA. It is like Oligo dt primer in reverse transcription. Therefore only the matured mRNA will be captured. Any study at pre-transcriptional layer cannot use Drop-seq tech.</p>
+
+<p>However, oligo dt primer is not the only choice during cDNA library construction, but we still have random primer. In the same way, probably the poly-T end could be abandoned, or replaced by further rounds synthesis of UMI, because generating UMI is nothing but adding random A/G/C/T to the end of cell barcode.</p>
+
+<h2 id="yes-absolute-amount-of-transcriptome">Yes, absolute amount of transcriptome</h2>
+
+<figure class="fullwidth"><img src="/blog/assets/img/drop-seq-data.png" /><figcaption>Pipeline of pre-processing reads of Drop-seq to data matrix</figcaption></figure>
+
+<p>Counting the unique UMIs for each gene in each cell generating the absolute amount of transcripts expression. Yes, no more RPKM.</p>
+
+<p>Due to the PCR amplification with STAMPs as templates, generated sequencing signals are robust and in the same time UMIs are expected to be duplicated. Only unique ones are taken into account for yielding the digital expression matrix. Cooking the reads into data matrix is done by a Java software developed by Jim Nemesh (see analysis manual here: http://mccarrolllab.com/dropseq/)</p>
+
+<h2 id="single-particle-binds--1-cells-it-happens">Single particle binds ≥ 1 cells? It happens.</h2>
+
+<p>Referring to Fig-3, it happens when the concentration of cells is high thus one particle could possibly attach more than one cells.</p>
+
+<h2 id="classifying-cells-using-tsne">Classifying cells using tSNE</h2>
+
+<p>The paper first performed PCA on original full features to abstract 32 significant PCs, then run tSNE on these PCs which further reduce dimension to 2D thus friendly for scatter plot.</p>
+
+<p>Classification is implemented by <a href="https://github.com/satijalab/seurat">Seurat</a>, a R language package developed  and maintained by Rahul Satija lab. It follows GPL 3.0 license and I have implemented patches, <code class="highlighter-rouge">honflueR</code> (see github: https://github.com/Puriney/honfleuR). Without violating <code class="highlighter-rouge">seurat</code> analysis context, it speeds up original functions and incorporates several new imputation strategies.</p>
+
+
+
+
+    </article>
+    <span class="print-footer">Drop-seq: single-cell sequencing in large scale - January 13, 2016 - 严云</span>
+    <footer>
+  <hr class="slender">
+  <ul class="footer-links">
+    <!-- <li><a href="mailto:hate@spam.net"><span class="icon-mail"></span></a></li>     -->
+    <!--  -->
+      <!-- <li> -->
+        <!-- <a href="//github.com/Puriney"><span class="icon-github"></span></a> -->
+      <!-- </li> -->
+    <!--  -->
+      <!-- <li> -->
+        <!-- <a href="/feed.xml"><span class="icon-feed"></span></a> -->
+      <!-- </li> -->
+    <!--    -->
+  </ul>
+<div class="credits">
+<!-- <span>&copy; 2016 &nbsp;&nbsp;严云</span></br> <br>
+<span>This site created with the <a href="//github.com/clayh53/tufte-jekyll">Tufte theme for use the Force, read the src </a> in <a href="//jekyllrb.com">Jekyll</a>.</span> 
+ -->
+<span>2013 - 2016 &nbsp;&nbsp;<a href="/blog/">Puriney</a> <span> using <a href="//jekyllrb.com">Jekyll</a> & <a href="//github.com/clayh53/tufte-jekyll">Tufte theme</a></span> </span>
+<br><br>
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+
+
+
+ </div>  
+</footer>
+  </body>
+</html>

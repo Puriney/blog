@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Puriney</title>
+    <description>Bio CS rstats</description>
+    <link>/blog/</link>
+    <atom:link href="/blog/feed.xml" rel="self" type="application/rss+xml"/>
+    <pubDate>Sun, 07 Feb 2016 22:46:38 -0500</pubDate>
+    <lastBuildDate>Sun, 07 Feb 2016 22:46:38 -0500</lastBuildDate>
+    <generator>Jekyll v3.1.1</generator>
+    
+      <item>
+        <title>Drop-seq: single-cell sequencing in large scale</title>
+        <description>&lt;p&gt;&lt;a href=&quot;http://mccarrolllab.com/dropseq/&quot;&gt;Drop-seq&lt;/a&gt; greatly improves the through-put of single-cell sequencing where transcriptome data of thousands of cells could be generated. This post highlights 3 features, 1 tech issue, 1 aspect of downstream analysis.&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;h2 id=&quot;stamp&quot;&gt;STAMP&lt;/h2&gt;
+
+&lt;p&gt;STAMP: single-cell transcriptome attached to microparticle. Due to the primer bead design, i.e. Cell barcode + UMI, the source of single-cell’s transcriptome would not be ambiguous and rather clearly determined.&lt;/p&gt;
+
+&lt;figure class=&quot;fullwidth&quot;&gt;&lt;img src=&quot;/blog/assets/img/drop-seq-umi-design.png&quot; /&gt;&lt;figcaption&gt;Design of cell barcode and UMI&lt;/figcaption&gt;&lt;/figure&gt;
+
+&lt;h2 id=&quot;not-compatible-for-pre-transcriptional-layer-but-&quot;&gt;Not compatible for pre-transcriptional layer, but …&lt;/h2&gt;
+
+&lt;p&gt;&lt;label for=&quot;id-1&quot; class=&quot;margin-toggle&quot;&gt;⊕&lt;/label&gt;&lt;input type=&quot;checkbox&quot; id=&quot;id-1&quot; class=&quot;margin-toggle&quot; /&gt;&lt;span class=&quot;marginnote&quot;&gt;&lt;img class=&quot;fullwidth&quot; src=&quot;/blog/assets/img/drop-seq-rna-hybrid.png&quot; /&gt;&lt;br /&gt;Hybridization&lt;/span&gt;&lt;/p&gt;
+
+&lt;p&gt;The poly-T end of the primer bead is responsible to attract the poly-A tail of mRNA. It is like Oligo dt primer in reverse transcription. Therefore only the matured mRNA will be captured. Any study at pre-transcriptional layer cannot use Drop-seq tech.&lt;/p&gt;
+
+&lt;p&gt;However, oligo dt primer is not the only choice during cDNA library construction, but we still have random primer. In the same way, probably the poly-T end could be abandoned, or replaced by further rounds synthesis of UMI, because generating UMI is nothing but adding random A/G/C/T to the end of cell barcode.&lt;/p&gt;
+
+&lt;h2 id=&quot;yes-absolute-amount-of-transcriptome&quot;&gt;Yes, absolute amount of transcriptome&lt;/h2&gt;
+
+&lt;figure class=&quot;fullwidth&quot;&gt;&lt;img src=&quot;/blog/assets/img/drop-seq-data.png&quot; /&gt;&lt;figcaption&gt;Pipeline of pre-processing reads of Drop-seq to data matrix&lt;/figcaption&gt;&lt;/figure&gt;
+
+&lt;p&gt;Counting the unique UMIs for each gene in each cell generating the absolute amount of transcripts expression. Yes, no more RPKM.&lt;/p&gt;
+
+&lt;p&gt;Due to the PCR amplification with STAMPs as templates, generated sequencing signals are robust and in the same time UMIs are expected to be duplicated. Only unique ones are taken into account for yielding the digital expression matrix. Cooking the reads into data matrix is done by a Java software developed by Jim Nemesh (see analysis manual here: http://mccarrolllab.com/dropseq/)&lt;/p&gt;
+
+&lt;h2 id=&quot;single-particle-binds--1-cells-it-happens&quot;&gt;Single particle binds ≥ 1 cells? It happens.&lt;/h2&gt;
+
+&lt;p&gt;Referring to Fig-3, it happens when the concentration of cells is high thus one particle could possibly attach more than one cells.&lt;/p&gt;
+
+&lt;h2 id=&quot;classifying-cells-using-tsne&quot;&gt;Classifying cells using tSNE&lt;/h2&gt;
+
+&lt;p&gt;The paper first performed PCA on original full features to abstract 32 significant PCs, then run tSNE on these PCs which further reduce dimension to 2D thus friendly for scatter plot.&lt;/p&gt;
+
+&lt;p&gt;Classification is implemented by &lt;a href=&quot;https://github.com/satijalab/seurat&quot;&gt;Seurat&lt;/a&gt;, a R language package developed  and maintained by Rahul Satija lab. It follows GPL 3.0 license and I have implemented patches, &lt;code class=&quot;highlighter-rouge&quot;&gt;honflueR&lt;/code&gt; (see github: https://github.com/Puriney/honfleuR). Without violating &lt;code class=&quot;highlighter-rouge&quot;&gt;seurat&lt;/code&gt; analysis context, it speeds up original functions and incorporates several new imputation strategies.&lt;/p&gt;
+</description>
+        <pubDate>Wed, 13 Jan 2016 09:07:42 -0500</pubDate>
+        <link>/blog/articles/2016/01/13/Drop-seq-single-cell-sequencing-in-large-scale</link>
+        <guid isPermaLink="true">/blog/articles/2016/01/13/Drop-seq-single-cell-sequencing-in-large-scale</guid>
+        
+        <category>drop-seq</category>
+        
+        <category>single cell sequencing</category>
+        
+        <category>sc-seq</category>
+        
+        <category>seurat</category>
+        
+        <category>R</category>
+        
+        
+        <category>Biology</category>
+        
+      </item>
+    
+  </channel>
+</rss>
